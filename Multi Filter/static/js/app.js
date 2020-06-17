@@ -29,16 +29,23 @@ function runEnter() {
   // Prevent the page from refreshing
   d3.event.preventDefault();
   
-  // Select the input element and get the raw HTML node
-  let inputElement = d3.select("#datetime");
+  // Get the value property of the input elements
+  let criteria = ["datetime", "city", "state", "country", "shape"];
+  
+  criteria forEach(function(c){
+  let inputValue = d3.select("#" + c).property("value") 
+  });
 
-  // Get the value property of the input element
-  var inputValue = inputElement.property("value");
 
-  console.log(inputValue);
+
+  let inputValue1 = d3.select("#datetime").property("value");
+  let inputValue2 = d3.select("#city").property("value");
+
+  console.log(inputValue1);
+  console.log(inputValue2);
   //   console.log(tableData);
 
-  let filteredData = tableData.filter(sighting => sighting.datetime === inputValue);
+  let filteredData = tableData.filter(sighting => sighting.datetime === inputValue1).filter(sighting => sighting.city === inputValue2);
 
   console.log(filteredData);
   console.log("done");
