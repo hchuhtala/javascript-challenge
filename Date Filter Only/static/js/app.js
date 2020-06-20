@@ -6,53 +6,51 @@ let tbody = d3.select("tbody");
 // console.log(data);
 
 data.forEach((ufoReport) => {
-    var row = tbody.append("tr");
-    Object.entries(ufoReport).forEach(([key, value]) => {
-      var cell = row.append("td");
-      cell.text(value);
-    });
+  let row = tbody.append("tr");
+  Object.entries(ufoReport).forEach(([key, value]) => {
+    let cell = row.append("td");
+    cell.text(value);
   });
+});
 
-// Add Filter
+let criteria = "datetime";
 
-// Select the form
-let button = d3.select("#filter-btn");
-let form = d3.select("#filters");
+// Create event handler function
 
-// Create event handlers 
-button.on("click", runEnter);
-form.on("submit",runEnter);
+d3.selectAll("#filter-btn").on("click", function () {
 
-// Complete the event handler function for the form
-function runEnter() {
+  let filteredData = data;
+  console.log(filteredData)
 
-  // Prevent the page from refreshing
-  d3.event.preventDefault();
+    // Get the value property of the input element
+    let inputValue = d3.select(`#${criteria}`).property("value");
+    console.log(`#${criteria}`);
+    console.log(inputValue);
+    // if (inputValue != "") {
+      filteredData = filteredData.filter(sighting => sighting[criteria] == inputValue);
+    // }
   
-  // Select the input element and get the raw HTML node
-  let inputElement = d3.select("#datetime");
-
-  // Get the value property of the input element
-  var inputValue = inputElement.property("value");
-
-  console.log(inputValue);
-  //   console.log(tableData);
-
-  let filteredData = tableData.filter(sighting => sighting.datetime === inputValue);
-
   console.log(filteredData);
-  console.log("done");
 
   //Clear table
   tbody.html("");
-  
-  //Display the filtered data
-  filteredData.forEach((ufoReport) => {
-    var row = tbody.append("tr");
-    Object.entries(ufoReport).forEach(([key, value]) => {
-      var cell = row.append("td");
-      cell.text(value);
-    });
-  });
 
-};
+  //If no results
+  if (filteredData.length == 0) {
+    d3.select("#results").text("No Results Meet Criteria");
+    console.log("no data");
+  }
+  //Results Found
+  else if (filteredData.length > 0) {
+    console.log("results found");
+    //Display the filtered data
+    filteredData.forEach((ufoReport) => {
+      let row = tbody.append("tr");
+      Object.entries(ufoReport).forEach(([key, value]) => {
+        let cell = row.append("td");
+        cell.text(value);
+      });
+    });
+  }
+
+});
